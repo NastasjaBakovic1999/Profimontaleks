@@ -520,10 +520,11 @@ namespace Profimontaleks.Migrations
 
             modelBuilder.Entity("Profimontaleks.Data.Worker", b =>
                 {
-                    b.Property<int>("JMBG")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JMBG")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Coefficient")
                         .HasColumnType("decimal(38,17)")
@@ -545,7 +546,7 @@ namespace Profimontaleks.Migrations
                         .HasColumnType("int")
                         .HasColumnName("WorkerStatusId");
 
-                    b.HasKey("JMBG");
+                    b.HasKey("Id", "JMBG");
 
                     b.HasIndex("PositionId");
 

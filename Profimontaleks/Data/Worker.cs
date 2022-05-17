@@ -8,7 +8,8 @@ namespace Profimontaleks.Data
 {
     public class Worker
     {
-        public int JMBG { get; set; }
+        public int Id { get; set; }
+        public string JMBG { get; set; }
         public double Coefficient { get; set; }
         public string NameAndSurname { get; set; }
         public DateTime DateOfEmployment { get; set; }

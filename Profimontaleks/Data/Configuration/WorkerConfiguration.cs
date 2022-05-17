@@ -14,7 +14,7 @@ namespace Profimontaleks.Data.Configuration
         {
             builder.ToTable("Worker");
 
-            builder.HasKey(w => w.JMBG);
+            builder.HasKey(w => new {w.Id, w.JMBG});
 
             builder.Property(w => w.WorkerStatusId)
              .HasColumnName("WorkerStatusId")

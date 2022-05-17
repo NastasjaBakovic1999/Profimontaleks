@@ -12,6 +12,9 @@ namespace Profimontaleks.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductCardboard> ProductCardboards { get; set; }
         public DbSet<ProductCardboardPhase> ProductCardboardPhases { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
+        public DbSet<Worker> Workers { get; set; }
+        public DbSet<WorkerStatus> WorkerStatuses { get; set; }
 
         public static readonly ILoggerFactory MyLoggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
