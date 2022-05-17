@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Profimontaleks.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace Profimontaleks
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Profimontaleks", Version = "v1" });
             });
+            services.AddDbContext<ProfimontaleksContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
