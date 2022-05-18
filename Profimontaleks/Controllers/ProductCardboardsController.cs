@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Profimontaleks.Data;
+using Profimontaleks.Services;
+using Profimontaleks.Services.Interfaces;
 
 namespace Profimontaleks.Controllers
 {
@@ -13,20 +15,19 @@ namespace Profimontaleks.Controllers
     [ApiController]
     public class ProductCardboardsController : ControllerBase
     {
-        private readonly ProfimontaleksContext context;
+        private readonly IServiceProductCardboard serviceProductCardboard;
+        private readonly IServiceProductCardboardPhase serviceProductCardboardPhase;
 
-        public ProductCardboardsController(ProfimontaleksContext context)
+        public ProductCardboardsController(IServiceProductCardboard serviceProductCardboard, IServiceProductCardboardPhase serviceProductCardboardPhase)
         {
-            this.context = context;
+            this.serviceProductCardboard = serviceProductCardboard;
+            this.serviceProductCardboardPhase = serviceProductCardboardPhase;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductCardboard>>> GetProductCardboards()
+        public ActionResult<IEnumerable<ProductCardboard>> GetProductCardboards()
         {
-            var productCardboards = await context.ProductCardboards
-                                            .Include(x => x.Product)
-                                            .Include(x => x.Phases)
-                                            .ToListAsync();
+            var productCardboards = serviceProductCardboard.GetAll();
             if (productCardboards == null)
                 return NotFound("There are still no product cardboards entered or an error has occurred!");
 
@@ -34,12 +35,12 @@ namespace Profimontaleks.Controllers
         }
 
         [HttpGet("{PCCNumber}")]
-        public async Task<ActionResult<ProductCardboard>> GetProductCardboard(int PCCNumber)
+        public ActionResult<ProductCardboard> GetProductCardboard(int PCCNumber)
         {
-            var productCardboard = await context.ProductCardboards
-               .Include(x => x.Product)
-               .Include(x => x.Phases)
-               .FirstOrDefaultAsync(x => x.PCCNumber == PCCNumber);
+            var productCardboard = serviceProductCardboard.GetById(PCCNumber);
+            var productCardboardPhases = serviceProductCardboardPhase.GetAllByPCCNumber(PCCNumber);
+
+            productCardboard.Phases = productCardboardPhases;
 
             if (productCardboard == null)
                 return NotFound("An error occurred while loading product cardboard!");
@@ -48,7 +49,7 @@ namespace Profimontaleks.Controllers
         }
 
         [HttpPut("{PCCNumber}")]
-        public async Task<IActionResult> PutProductCardboard(int PCCNumber, ProductCardboard productCardboardToUpdate)
+        public IActionResult PutProductCardboard(int PCCNumber, ProductCardboard productCardboardToUpdate)
         {
             if (PCCNumber != productCardboardToUpdate.PCCNumber)
             {
@@ -57,20 +58,13 @@ namespace Profimontaleks.Controllers
 
             try
             {
-                var productCardboard = await context.ProductCardboards.FirstOrDefaultAsync(x => x.PCCNumber == PCCNumber);
-                if (productCardboard == null) return NotFound();
+                foreach(var pc in productCardboardToUpdate.Phases)
+                {
+                    serviceProductCardboardPhase.Update(pc);
+                }
 
-                productCardboard.Product = await context.Products.FirstOrDefaultAsync(x => x.Id == productCardboardToUpdate.ProductId);
-                productCardboard.StartDate = productCardboardToUpdate.StartDate;
-                productCardboard.EndDate = productCardboardToUpdate.EndDate;
-                context.Entry(productCardboard).State = EntityState.Modified;
-
-                context.Update(productCardboard);
-
-                if (await context.SaveChangesAsync() > 0)
-                    return CreatedAtAction("GetProductCardboard", new { PCCNumber = productCardboard.PCCNumber }, productCardboard);
-
-                return BadRequest("An error occurred while updating product cardboard!");
+                serviceProductCardboard.Update(productCardboardToUpdate);
+                return CreatedAtAction("GetProductCardboard", new { PCCNumber = productCardboardToUpdate.PCCNumber }, productCardboardToUpdate);
             }
             catch (Exception ex)
             {
@@ -79,15 +73,12 @@ namespace Profimontaleks.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductCardboard>> PostProductCardboard(ProductCardboard productCardboard)
+        public ActionResult<ProductCardboard> PostProductCardboard(ProductCardboard productCardboard)
         {
             try
             {
-                productCardboard.Product = await context.Products.FirstOrDefaultAsync(x => x.Id == productCardboard.ProductId);
-                context.Add(productCardboard);
-
-                if (await context.SaveChangesAsync() > 0) return CreatedAtAction("GetProductCardboard", new { PCCNumber = productCardboard.PCCNumber }, productCardboard);
-                return BadRequest("An error occurred while creating new product cardboard!");
+                serviceProductCardboard.Add(productCardboard);
+                return CreatedAtAction("GetProductCardboard", new { PCCNumber = productCardboard.PCCNumber }, productCardboard);
             }
             catch (Exception ex)
             {

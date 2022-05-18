@@ -15,6 +15,7 @@ namespace Profimontaleks.DataAccess.UnitOfWork.Implementation
             Position = new RepositoryPosition(context);
             Product = new RepositoryProduct(context);
             ProductCardboard = new RepositoryProductCardboard(context);
+            ProductCardboardPhase = new RepositoryProductCardboardPhase(context);
             ProductType = new RepositoryProductType(context);
             Worker = new RepositoryWorker(context);
             WorkerStatus = new RepositoryWorkerStatus(context);
@@ -32,12 +33,12 @@ namespace Profimontaleks.DataAccess.UnitOfWork.Implementation
 
         public void Commit()
         {
-            throw new System.NotImplementedException();
+            context.SaveChanges();
         }
 
         public void Dispose()
         {
-            throw new System.NotImplementedException();
+            context.Dispose();
         }
     }
 }

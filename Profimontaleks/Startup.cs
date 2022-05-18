@@ -8,6 +8,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Profimontaleks.Data;
+using Profimontaleks.DataAccess.UnitOfWork;
+using Profimontaleks.DataAccess.UnitOfWork.Implementation;
+using Profimontaleks.Services.Implementation;
+using Profimontaleks.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +31,24 @@ namespace Profimontaleks
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IServicePhase, ServicePhase>();
+            services.AddScoped<IServicePhaseStatus, ServicePhaseStatus>();
+            services.AddScoped<IServiceProduct, ServiceProduct>();
+            services.AddScoped<IServiceProductCardboard, ServiceProductCardboard>();
+            services.AddScoped<IServiceProductCardboardPhase, ServiceProductCardboardPhase>();
+            services.AddScoped<IServiceProductType, ServiceProductType>();
+            services.AddScoped<IServiceWorker, ServiceWorker>();
+            services.AddScoped<IServiceWorkerStatus, ServiceWorkerStatus>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Profimontaleks", Version = "v1" });
             });
+
             services.AddDbContext<ProfimontaleksContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Profimontaleks.Data;
+using Profimontaleks.Services.Interfaces;
 using System;
 using System.Threading.Tasks;
 
@@ -11,41 +12,38 @@ namespace Profimontaleks.Controllers
     [ApiController]
     public class WorkerController : ControllerBase
     {
-        private readonly ProfimontaleksContext context;
+        private readonly IServiceWorker serviceWorker;
+        private readonly IServiceWorkerStatus serviceWorkerStatus;
 
-        public WorkerController(ProfimontaleksContext context)
+        public WorkerController(IServiceWorker serviceWorker, IServiceWorkerStatus serviceWorkerStatus)
         {
-            this.context = context;
+            this.serviceWorker = serviceWorker;
+            this.serviceWorkerStatus = serviceWorkerStatus;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetWorkers()
+        public IActionResult GetWorkers()
         {
-            var workers = await context.Workers.Include(x => x.Status).Include(x => x.Position).ToArrayAsync();
+            var workers = serviceWorker.GetAll();
             if (workers == null) return NotFound("There are still no workers entered or an error has occurred!");
             return Ok(workers);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetWorker(int id)
+        public IActionResult GetWorker(int id)
         {
-            var worker = await context.Workers.Include(x => x.Status).Include(x => x.Position).FirstOrDefaultAsync(x => x.Id == id);
-            if(worker == null) return NotFound("An error occurred while loading worker!");
+            var worker = serviceWorker.GetById(id);
+            if (worker == null) return NotFound("An error occurred while loading worker!");
             return Ok(worker);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateWorker([FromBody] Worker worker)
+        public IActionResult CreateWorker([FromBody] Worker worker)
         {
             try
             {
-                worker.Status = await context.WorkerStatuses.FirstOrDefaultAsync(x => x.Id == worker.WorkerStatusId);
-                worker.Position = await context.Positions.FirstOrDefaultAsync(x => x.Id == worker.PositionId);
-
-                context.Add(worker);
-
-                if (await context.SaveChangesAsync() > 0) return CreatedAtAction("GetWorker", new { id = worker.Id }, worker);
-                return BadRequest("An error occurred while saving a new worker!");
+                serviceWorker.Add(worker);
+                return CreatedAtAction("GetWorker", new { id = worker.Id }, worker);
             }
             catch (Exception ex)
             {
@@ -54,7 +52,7 @@ namespace Profimontaleks.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateWorker(int id, [FromBody] Worker workerToUpdate)
+        public IActionResult UpdateWorker(int id, [FromBody] Worker workerToUpdate)
         {
             if (id != workerToUpdate.Id)
             {
@@ -63,20 +61,8 @@ namespace Profimontaleks.Controllers
 
             try
             {
-                var worker = await context.Workers.FirstOrDefaultAsync(x => x.Id == id);
-                if (worker == null) return NotFound("An error occurred while loading worker!");
-
-                worker.Status = await context.WorkerStatuses.FirstOrDefaultAsync(x => x.Id == workerToUpdate.WorkerStatusId);
-                worker.Position = await context.Positions.FirstOrDefaultAsync(x => x.Id == workerToUpdate.PositionId);
-                worker.NameAndSurname = workerToUpdate.NameAndSurname;
-                worker.Coefficient = workerToUpdate.Coefficient;
-                worker.DateOfEmployment = workerToUpdate.DateOfEmployment;
-
-                context.Update(worker);
-
-                if (await context.SaveChangesAsync() > 0) return Ok();
-
-                return BadRequest("An error occurred while updating worker!");
+                serviceWorker.Update(workerToUpdate);
+                return Ok();
             }
             catch (Exception ex)
             {
