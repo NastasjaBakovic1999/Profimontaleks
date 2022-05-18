@@ -39,12 +39,12 @@ namespace Profimontaleks.Controllers
         {
             try
             {
-                worker.Status = await context.WorkerStatuses.FirstOrDefaultAsync(x => x.Id == worker.Status.Id);
-                worker.Position = await context.Positions.FirstOrDefaultAsync(x => x.Id == worker.Position.Id);
+                worker.Status = await context.WorkerStatuses.FirstOrDefaultAsync(x => x.Id == worker.WorkerStatusId);
+                worker.Position = await context.Positions.FirstOrDefaultAsync(x => x.Id == worker.PositionId);
 
                 context.Add(worker);
 
-                if (await context.SaveChangesAsync() > 0) return Ok();
+                if (await context.SaveChangesAsync() > 0) return CreatedAtAction("GetWorker", new { id = worker.Id }, worker);
                 return BadRequest("An error occurred while saving a new worker!");
             }
             catch (Exception ex)
@@ -66,8 +66,8 @@ namespace Profimontaleks.Controllers
                 var worker = await context.Workers.FirstOrDefaultAsync(x => x.Id == id);
                 if (worker == null) return NotFound("An error occurred while loading worker!");
 
-                worker.Status = await context.WorkerStatuses.FirstOrDefaultAsync(x => x.Id == workerToUpdate.Status.Id);
-                worker.Position = await context.Positions.FirstOrDefaultAsync(x => x.Id == workerToUpdate.Position.Id);
+                worker.Status = await context.WorkerStatuses.FirstOrDefaultAsync(x => x.Id == workerToUpdate.WorkerStatusId);
+                worker.Position = await context.Positions.FirstOrDefaultAsync(x => x.Id == workerToUpdate.PositionId);
                 worker.NameAndSurname = workerToUpdate.NameAndSurname;
                 worker.Coefficient = workerToUpdate.Coefficient;
                 worker.DateOfEmployment = workerToUpdate.DateOfEmployment;

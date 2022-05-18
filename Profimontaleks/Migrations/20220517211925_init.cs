@@ -100,8 +100,9 @@ namespace Profimontaleks.Migrations
                 name: "Worker",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    JMBG = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    JMBG = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Coefficient = table.Column<decimal>(type: "decimal(38,17)", nullable: false),
                     NameAndSurname = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     DateOfEmployment = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -110,7 +111,7 @@ namespace Profimontaleks.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Worker", x => new { x.Id, x.JMBG });
+                    table.PrimaryKey("PK_Worker", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Worker_Position_PositionId",
                         column: x => x.PositionId,
