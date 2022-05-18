@@ -7,7 +7,7 @@ namespace Profimontaleks.DataAccess
     {
         public void Add(ProductCardboardPhase productCardboardPhase);
         public void Update(ProductCardboardPhase productCardboardPhase);
-        public ProductCardboardPhase GetById(int id);
+        public ProductCardboardPhase GetById(int PCCNumber, int Id);
         public List<ProductCardboardPhase> GetAllByPCCNumber(int PCCNumber);
     }
 }
