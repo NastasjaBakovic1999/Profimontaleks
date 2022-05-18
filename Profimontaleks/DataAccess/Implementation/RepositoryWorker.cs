@@ -1,5 +1,7 @@
 ﻿using Profimontaleks.Data;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Profimontaleks.DataAccess.Implementation
 {
@@ -14,22 +16,50 @@ namespace Profimontaleks.DataAccess.Implementation
 
         public void Add(Worker worker)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                context.Workers.Add(worker);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public List<Worker> GetAll()
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return context.Workers.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public Worker GetById(int id)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                return context.Workers.Find(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public void Update(Worker worker)
         {
-            throw new System.NotImplementedException();
+            try
+            {
+                context.Workers.Update(worker);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
