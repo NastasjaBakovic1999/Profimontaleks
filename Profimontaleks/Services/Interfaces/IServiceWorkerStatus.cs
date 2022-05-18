@@ -1,6 +1,8 @@
-﻿namespace Profimontaleks.Services.Interfaces
+﻿using Profimontaleks.Data;
+
+namespace Profimontaleks.Services.Interfaces
 {
-    public interface IServiceWorkerStatus
+    public interface IServiceWorkerStatus : IService<WorkerStatus>
     {
     }
 }

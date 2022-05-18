@@ -1,6 +1,8 @@
-﻿namespace Profimontaleks.Services.Interfaces
+﻿using Profimontaleks.Data;
+
+namespace Profimontaleks.Services.Interfaces
 {
-    public interface IServiceProduct
+    public interface IServiceProduct : IService<Product>
     {
     }
 }

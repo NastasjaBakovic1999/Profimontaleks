@@ -12,7 +12,7 @@ namespace Profimontaleks.DataAccess.UnitOfWork.Implementation
             this.context = context;
             Phase = new RepositoryPhase(context);
             PhaseStatus = new RepositoryPhaseStatus(context);
-            PhasePosition = new RepositoryPosition(context);
+            Position = new RepositoryPosition(context);
             Product = new RepositoryProduct(context);
             ProductCardboard = new RepositoryProductCardboard(context);
             ProductType = new RepositoryProductType(context);
@@ -22,7 +22,7 @@ namespace Profimontaleks.DataAccess.UnitOfWork.Implementation
 
         public IReposiotyPhase Phase { get; set; }
         public IRepositoryPhaseStatus PhaseStatus { get; set; }
-        public IRepositoryPosition PhasePosition { get; set; }
+        public IRepositoryPosition Position { get; set; }
         public IRepositoryProduct Product { get; set; }
         public IRepositoryProductCardboard ProductCardboard { get; set; }
         public IRepositoryProductCardboardPhase ProductCardboardPhase { get; set; }
