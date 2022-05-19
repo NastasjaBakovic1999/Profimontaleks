@@ -14,11 +14,13 @@ namespace Profimontaleks.Controllers
     {
         private readonly IServiceWorker serviceWorker;
         private readonly IServiceWorkerStatus serviceWorkerStatus;
+        private readonly IServicePosition servicePosition;
 
-        public WorkerController(IServiceWorker serviceWorker, IServiceWorkerStatus serviceWorkerStatus)
+        public WorkerController(IServiceWorker serviceWorker, IServiceWorkerStatus serviceWorkerStatus, IServicePosition servicePosition)
         {
             this.serviceWorker = serviceWorker;
             this.serviceWorkerStatus = serviceWorkerStatus;
+            this.servicePosition = servicePosition;
         }
 
         [HttpGet]

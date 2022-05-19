@@ -1,4 +1,5 @@
-﻿using Profimontaleks.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Profimontaleks.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace Profimontaleks.DataAccess.Implementation
         {
             try
             {
-                return context.Products.ToList();
+                return context.Products.Include(x => x.Type).ToList();
             }
             catch (Exception ex)
             {

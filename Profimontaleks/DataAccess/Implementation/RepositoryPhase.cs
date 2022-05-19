@@ -25,5 +25,17 @@ namespace Profimontaleks.DataAccess.Implementation
                 throw new Exception(ex.Message);
             }
         }
+
+        public Phase GetById(int Id)
+        {
+            try
+            {
+                return context.Phases.FirstOrDefault(x => x.Id == Id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

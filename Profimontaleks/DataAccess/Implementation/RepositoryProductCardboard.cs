@@ -1,4 +1,5 @@
-﻿using Profimontaleks.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Profimontaleks.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Profimontaleks.DataAccess.Implementation
         {
             try
             {
-                return context.ProductCardboards.ToList();
+                return context.ProductCardboards.Include(p => p.Product).ToList();
             }
             catch (Exception ex)
             {
@@ -42,7 +43,8 @@ namespace Profimontaleks.DataAccess.Implementation
         {
             try
             {
-                return context.ProductCardboards.SingleOrDefault(s => s.PCCNumber == PCCNumber);
+                return context.ProductCardboards.Include(p=>p.Product)
+                                    .SingleOrDefault(s => s.PCCNumber == PCCNumber);
             }
             catch (Exception ex)
             {
@@ -54,7 +56,8 @@ namespace Profimontaleks.DataAccess.Implementation
         {
             try
             {
-                context.ProductCardboards.Update(productCardboard);
+                context.ProductCardboards.Attach(productCardboard);
+                context.Entry(productCardboard).State = EntityState.Modified;
             }
             catch (Exception ex)
             {

@@ -10,10 +10,8 @@ namespace Profimontaleks.Data
     public class ProductCardboardPhase
     {
         public int PCCNumber { get; set; }
-        [NotMapped]
         public ProductCardboard ProductCardboard { get; set; }
         public int PhaseId { get; set; }
-        [NotMapped]
         public Phase Phase { get; set; }
         public int StatusId { get; set; }
         public PhaseStatus Status { get; set; }

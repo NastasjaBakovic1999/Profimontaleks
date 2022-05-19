@@ -1,4 +1,5 @@
-﻿using Profimontaleks.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Profimontaleks.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,11 +26,27 @@ namespace Profimontaleks.DataAccess.Implementation
             }
         }
 
+        public void Delete(int PCCNumber, int id)
+        {
+            try
+            {
+                var prp = context.ProductCardboardPhases.FirstOrDefault(x => x.PCCNumber == PCCNumber && x.PhaseId == id);
+                context.ProductCardboardPhases.Remove(prp);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public List<ProductCardboardPhase> GetAll()
         {
             try
             {
-                return context.ProductCardboardPhases.ToList();
+                return context.ProductCardboardPhases.Include(p =>p.ProductCardboard)
+                                                      .Include(p => p.Phase)
+                                                      .Include(p => p.Status)
+                                                      .ToList();
             }
             catch (Exception ex)
             {
@@ -41,7 +58,15 @@ namespace Profimontaleks.DataAccess.Implementation
         {
             try
             {
-                return context.ProductCardboardPhases.Where(p => p.PCCNumber == PCCNumber).ToList();
+                var phases = context.ProductCardboardPhases.Include(x => x.Status)
+                                                           .Include(x => x.Phase)
+                                                           .Include(x => x.ProductCardboard)
+                                                           .Where(p => p.PCCNumber == PCCNumber);
+                if (phases != null)
+                {
+                    return phases.ToList();
+                }
+                else return null;
             }
             catch (Exception ex)
             {
@@ -53,7 +78,7 @@ namespace Profimontaleks.DataAccess.Implementation
         {
             try
             {
-                return context.ProductCardboardPhases.Find(PCCNumber, Id);
+                return context.ProductCardboardPhases.Include(x => x.Status).FirstOrDefault(x=> x.PCCNumber == PCCNumber && x.PhaseId == Id);
             }
             catch (Exception ex)
             {

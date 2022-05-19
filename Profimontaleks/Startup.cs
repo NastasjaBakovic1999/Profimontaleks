@@ -36,6 +36,7 @@ namespace Profimontaleks
             services.AddScoped<IServiceProduct, ServiceProduct>();
             services.AddScoped<IServiceProductCardboard, ServiceProductCardboard>();
             services.AddScoped<IServiceProductCardboardPhase, ServiceProductCardboardPhase>();
+            services.AddScoped<IServicePosition, ServicePosition>();
             services.AddScoped<IServiceProductType, ServiceProductType>();
             services.AddScoped<IServiceWorker, ServiceWorker>();
             services.AddScoped<IServiceWorkerStatus, ServiceWorkerStatus>();
@@ -44,6 +45,7 @@ namespace Profimontaleks
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Profimontaleks", Version = "v1" });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
 
             services.AddDbContext<ProfimontaleksContext>();
@@ -63,7 +65,7 @@ namespace Profimontaleks
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Profimontaleks v1"));
             }
-
+            app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
 
             app.UseRouting();

@@ -31,7 +31,7 @@ namespace Profimontaleks.Services.Implementation
 
             if (productCardboard == null) return false;
             if (productCardboard.StartDate > productCardboard.EndDate) return false;
-            if (productCardboard.StartDate > DateTime.Today || productCardboard.EndDate > DateTime.Today) return false;
+            if (productCardboard.StartDate < DateTime.Now || productCardboard.EndDate < DateTime.Now) return false;
             if (productCardboard.ProductId == 0) return false;
 
             return valid;
@@ -50,10 +50,6 @@ namespace Profimontaleks.Services.Implementation
 
         public void Update(ProductCardboard productCardboard)
         {
-            if (!IsValid(productCardboard))
-            {
-                throw new ArgumentOutOfRangeException("Invalid entry!");
-            }
             unitOfWork.ProductCardboard.Update(productCardboard);
             unitOfWork.Commit();
         }

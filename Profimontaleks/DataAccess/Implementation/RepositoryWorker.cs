@@ -1,4 +1,5 @@
-﻿using Profimontaleks.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Profimontaleks.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Profimontaleks.DataAccess.Implementation
         {
             try
             {
-                return context.Workers.ToList();
+                return context.Workers.Include(x => x.Position).Include(x=>x.Status).ToList();
             }
             catch (Exception ex)
             {
@@ -42,7 +43,7 @@ namespace Profimontaleks.DataAccess.Implementation
         {
             try
             {
-                return context.Workers.Find(id);
+                return context.Workers.Include(x => x.Position).Include(x => x.Status).SingleOrDefault(x => x.Id == id);
             }
             catch (Exception ex)
             {

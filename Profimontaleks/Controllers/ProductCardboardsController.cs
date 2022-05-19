@@ -38,18 +38,13 @@ namespace Profimontaleks.Controllers
         public ActionResult<ProductCardboard> GetProductCardboard(int PCCNumber)
         {
             var productCardboard = serviceProductCardboard.GetById(PCCNumber);
-            var productCardboardPhases = serviceProductCardboardPhase.GetAllByPCCNumber(PCCNumber);
-
-            productCardboard.Phases = productCardboardPhases;
-
             if (productCardboard == null)
                 return NotFound("An error occurred while loading product cardboard!");
-
             return Ok(productCardboard);
         }
 
         [HttpPut("{PCCNumber}")]
-        public IActionResult PutProductCardboard(int PCCNumber, ProductCardboard productCardboardToUpdate)
+        public IActionResult PutProductCardboard(int PCCNumber, [FromBody]ProductCardboard productCardboardToUpdate)
         {
             if (PCCNumber != productCardboardToUpdate.PCCNumber)
             {
@@ -58,11 +53,6 @@ namespace Profimontaleks.Controllers
 
             try
             {
-                foreach(var pc in productCardboardToUpdate.Phases)
-                {
-                    serviceProductCardboardPhase.Update(pc);
-                }
-
                 serviceProductCardboard.Update(productCardboardToUpdate);
                 return CreatedAtAction("GetProductCardboard", new { PCCNumber = productCardboardToUpdate.PCCNumber }, productCardboardToUpdate);
             }
@@ -73,7 +63,7 @@ namespace Profimontaleks.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ProductCardboard> PostProductCardboard(ProductCardboard productCardboard)
+        public ActionResult<ProductCardboard> PostProductCardboard([FromBody] ProductCardboard productCardboard)
         {
             try
             {

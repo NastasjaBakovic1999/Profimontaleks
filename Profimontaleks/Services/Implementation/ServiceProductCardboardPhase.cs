@@ -77,5 +77,11 @@ namespace Profimontaleks.Services.Implementation
             unitOfWork.ProductCardboardPhase.Update(productCardboardPhase);
             unitOfWork.Commit();
         }
+
+        public void Delete(int PCCNumber, int id)
+        {
+            unitOfWork.ProductCardboardPhase.Delete(PCCNumber, id);
+            unitOfWork.Commit();
+        }
     }
 }

@@ -4,5 +4,6 @@ namespace Profimontaleks.DataAccess
 {
     public interface IRepositoryPosition : IRepository<Position>
     {
+        
     }
 }
