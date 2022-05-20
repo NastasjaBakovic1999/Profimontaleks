@@ -17,7 +17,7 @@ namespace Profimontaleks.Controllers
             this.servicePhase = servicePhase;
         }
 
-        [HttpGet]
+        [HttpGet("get-phases")]
         public ActionResult<IEnumerable<Phase>> GetPhases()
         {
             var phases = servicePhase.GetAll();

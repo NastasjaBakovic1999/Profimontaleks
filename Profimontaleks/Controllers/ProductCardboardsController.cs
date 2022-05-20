@@ -24,7 +24,7 @@ namespace Profimontaleks.Controllers
             this.serviceProductCardboardPhase = serviceProductCardboardPhase;
         }
 
-        [HttpGet]
+        [HttpGet("get-cardboards")]
         public ActionResult<IEnumerable<ProductCardboard>> GetProductCardboards()
         {
             var productCardboards = serviceProductCardboard.GetAll();
@@ -34,7 +34,7 @@ namespace Profimontaleks.Controllers
             return Ok(productCardboards);
         }
 
-        [HttpGet("{PCCNumber}")]
+        [HttpGet("get-cardboard/{PCCNumber}")]
         public ActionResult<ProductCardboard> GetProductCardboard(int PCCNumber)
         {
             var productCardboard = serviceProductCardboard.GetById(PCCNumber);
@@ -43,7 +43,7 @@ namespace Profimontaleks.Controllers
             return Ok(productCardboard);
         }
 
-        [HttpPut("{PCCNumber}")]
+        [HttpPut("update-cardboard/{PCCNumber}")]
         public IActionResult PutProductCardboard(int PCCNumber, [FromBody]ProductCardboard productCardboardToUpdate)
         {
             if (PCCNumber != productCardboardToUpdate.PCCNumber)
@@ -62,7 +62,7 @@ namespace Profimontaleks.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("create-cardboard")]
         public ActionResult<ProductCardboard> PostProductCardboard([FromBody] ProductCardboard productCardboard)
         {
             try

@@ -17,7 +17,7 @@ namespace Profimontaleks.Controllers
             this.serviceProduct = serviceProduct;
         }
 
-        [HttpGet]
+        [HttpGet("get-products")]
         public ActionResult<IEnumerable<Product>> GetProducts()
         {
             var phases = serviceProduct.GetAll();

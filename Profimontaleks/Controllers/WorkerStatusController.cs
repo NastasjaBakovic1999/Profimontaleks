@@ -17,7 +17,7 @@ namespace Profimontaleks.Controllers
             this.serviceWorkerStatus = serviceWorkerStatus;
         }
 
-        [HttpGet]
+        [HttpGet("get-worker-statuses")]
         public ActionResult<IEnumerable<WorkerStatus>> GetWorkerStatuses()
         {
             var phases = serviceWorkerStatus.GetAll();

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Profimontaleks.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/cardboard")]
     [ApiController]
     public class ProductCardboardPhaseController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace Profimontaleks.Controllers
             this.serviceProductCardboardPhase = serviceProductCardboardPhase;
         }
 
-        [HttpGet]
+        [HttpGet("get-cardboard-phases/{PCCNumber}")]
         public ActionResult<IEnumerable<ProductCardboardPhase>> GetProductCardboardPhases(int PCCNumber)
         {
             try
@@ -37,7 +37,7 @@ namespace Profimontaleks.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("delete-cardboard-phase")]
         public ActionResult<ProductCardboardPhase> DeleteProductCardboardPhase([FromBody] ProductCardboardPhase pcp)
         {
             try
@@ -53,9 +53,10 @@ namespace Profimontaleks.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult<ProductCardboardPhase> CreateProductCardboardPhase([FromBody]ProductCardboardPhase pcp)
+        [HttpPost("add-cardboard-phase")]
+        public ActionResult<ProductCardboardPhase> CreateProductCardboardPhase([FromBody] ProductCardboardPhase pcp)
         {
+
             try
             {
                 serviceProductCardboardPhase.Add(pcp);
@@ -67,7 +68,7 @@ namespace Profimontaleks.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("update-cardboard-phase")]
         public IActionResult UpdateCardboardPhase([FromBody]ProductCardboardPhase pcp)
         {
             try

@@ -18,7 +18,7 @@ namespace Profimontaleks.Controllers
             this.servicePosition = servicePosition;
         }
 
-        [HttpGet]
+        [HttpGet("get-positions")]
         public ActionResult<IEnumerable<Position>> GetPositions()
         {
             var phases = servicePosition.GetAll();

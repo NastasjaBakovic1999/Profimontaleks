@@ -23,7 +23,7 @@ namespace Profimontaleks.Controllers
             this.servicePosition = servicePosition;
         }
 
-        [HttpGet]
+        [HttpGet("get-workers")]
         public IActionResult GetWorkers()
         {
             var workers = serviceWorker.GetAll();
@@ -31,7 +31,7 @@ namespace Profimontaleks.Controllers
             return Ok(workers);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("get-worker/{id}")]
         public IActionResult GetWorker(int id)
         {
             var worker = serviceWorker.GetById(id);
@@ -39,7 +39,7 @@ namespace Profimontaleks.Controllers
             return Ok(worker);
         }
 
-        [HttpPost]
+        [HttpPost("create-worker")]
         public IActionResult CreateWorker([FromBody] Worker worker)
         {
             try
@@ -53,7 +53,7 @@ namespace Profimontaleks.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("update-worker/{id}")]
         public IActionResult UpdateWorker(int id, [FromBody] Worker workerToUpdate)
         {
             if (id != workerToUpdate.Id)
