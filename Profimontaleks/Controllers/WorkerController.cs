@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Profimontaleks.Controllers
 {
-    [Route("api/workers")]
+    [Route("api/worker")]
     [ApiController]
     public class WorkerController : ControllerBase
     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Profimontaleks.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/phase-status")]
     [ApiController]
     public class PhaseStatusController : ControllerBase
     {

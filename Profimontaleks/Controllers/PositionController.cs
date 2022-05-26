@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Profimontaleks.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/position")]
     [ApiController]
     public class PositionController : ControllerBase
     {
