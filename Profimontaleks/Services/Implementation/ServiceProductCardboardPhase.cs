@@ -18,9 +18,14 @@ namespace Profimontaleks.Services.Implementation
 
         public void Add(ProductCardboardPhase productCardboardPhase)
         {
-            if (!IsValid(productCardboardPhase) || AlreadyExistInDB(productCardboardPhase))
+            if (!IsValid(productCardboardPhase))
             {
                 throw new ArgumentOutOfRangeException("Invalid entry!");
+            }
+
+            if (AlreadyExistInDB(productCardboardPhase))
+            {
+                throw new ArgumentOutOfRangeException("Already exist!");
             }
             unitOfWork.ProductCardboardPhase.Add(productCardboardPhase);
             unitOfWork.Commit();

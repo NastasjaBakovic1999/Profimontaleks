@@ -31,7 +31,7 @@ namespace Profimontaleks.DataAccess.Implementation
         {
             try
             {
-                return context.ProductCardboards.Include(p => p.Product).ToList();
+                return context.ProductCardboards.Include(p => p.Product).ThenInclude(pr=>pr.Type).ToList();
             }
             catch (Exception ex)
             {

@@ -38,13 +38,13 @@ namespace Profimontaleks.Controllers
         }
 
         [HttpDelete("delete-cardboard-phase")]
-        public ActionResult<ProductCardboardPhase> DeleteProductCardboardPhase([FromBody] ProductCardboardPhase pcp)
+        public ActionResult<ProductCardboardPhase> DeleteProductCardboardPhase([FromQuery] int[] ids)
         {
             try
             {
-                var productCardboardPhase = serviceProductCardboardPhase.GetById(pcp.PCCNumber, pcp.PhaseId);
+                var productCardboardPhase = serviceProductCardboardPhase.GetById(ids[0], ids[1]);
                 if (productCardboardPhase == null) return NotFound("An error occurred while loading product cardboard!");
-                serviceProductCardboardPhase.Delete(pcp.PCCNumber, pcp.PhaseId);
+                serviceProductCardboardPhase.Delete(ids[0], ids[1]);
                 return Ok();
             }
             catch (Exception ex)

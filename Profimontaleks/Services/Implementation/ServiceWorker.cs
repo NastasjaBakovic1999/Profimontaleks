@@ -18,10 +18,16 @@ namespace Profimontaleks.Services.Implementation
 
         public void Add(Worker worker)
         {
-            if(!IsValid(worker) || AlreadyExistInDB(worker))
+            if(!IsValid(worker))
             {
                 throw new ArgumentOutOfRangeException("Invalid entry!");
             }
+
+            if (AlreadyExistInDB(worker))
+            {
+                throw new ArgumentOutOfRangeException("Already exist!");
+            }
+
             unitOfWork.Worker.Add(worker);
             unitOfWork.Commit();
         }
